@@ -1,4 +1,4 @@
-Metadata-Version: 2.1
+Metadata-Version: 2.4
 Name: qasystem
 Version: 0.0.1
 Author: sunny
@@ -15,3 +15,6 @@ Requires-Dist: awscli
 Requires-Dist: streamlit
 Requires-Dist: pypdf
 Requires-Dist: faiss-cpu
+Dynamic: author
+Dynamic: author-email
+Dynamic: requires-dist
