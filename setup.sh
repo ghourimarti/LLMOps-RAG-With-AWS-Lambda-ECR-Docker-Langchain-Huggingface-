@@ -3,3 +3,15 @@ conda activate "D:\Coursera Courses (NVME)\LLM freecodecamp\LLMOps-sunnysavita\L
 
 
 https://cloud.google.com/architecture/mlops-continuous-delivery-and-automation-pipelines-in-machine-learning
+
+
+# ===============================================================
+# install
+curl -Ls https://astral.sh/uv/install.sh | sh
+# ===============================================================
+# install uv
+python -m venv llmops
+source llmops/Scripts/activate
+
+pip install --upgrade pip
+pip install -r requirements.txt
