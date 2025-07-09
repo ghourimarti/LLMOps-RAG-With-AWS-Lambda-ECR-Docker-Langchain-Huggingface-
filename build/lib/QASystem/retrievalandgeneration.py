@@ -1,18 +1,23 @@
 from langchain.chains import RetrievalQA
-from langchain.vectorstores import FAISS
-from langchain.llms.bedrock import Bedrock
+from langchain_community.vectorstores import FAISS
+from langchain_aws import BedrockLLM as Bedrock
 import boto3
 from langchain.prompts import PromptTemplate
 from QASystem.ingestion import get_vector_store
+from QASystem.ingestion import data_ingestion
+from langchain_aws import BedrockEmbeddings
 
 bedrock=boto3.client(service_name="bedrock-runtime")
+bedrock_embeddings=BedrockEmbeddings(model_id="amazon.titan-embed-text-v1",client=bedrock)
 
 
+# Prompt template for the LLM
+# This template is designed to provide a detailed answer based on the context provided.
 prompt_template = """
 
-Human: Use the following pieces of context to provide a 
-concise answer to the question at the end but usse atleast summarize with 
-250 words with detailed explaantions. If you don't know the answer, 
+Human: Use the following pieces of context to provide a
+concise answer to the question at the end but use atleast summarize with
+10000 words with detailed explanations. If you don't know the answer,
 just say that you don't know, don't try to make up an answer.
 <context>
 {context}
@@ -28,11 +33,18 @@ PROMPT=PromptTemplate(
 
 
 def get_llama2_llm():
-    llm=Bedrock(model_id="meta.llama2-13b-chat-v1",client=bedrock,model_kwargs={"maxTokens":512})
+    print("\n<------------------------------------------>")
+    print("<------------ get_llama2_llm ------------->")
+    print("<------------------------------------------>\n")
+    
+    llm=Bedrock(model_id="meta.llama3-70b-instruct-v1:0",client=bedrock)
     
     return llm
 
 def get_response_llm(llm,vectorstore_faiss,query):
+    print("\n<------------------------------------------>")
+    print("<----------- get_response_llm ------------->")
+    print("<------------------------------------------>\n")
     qa=RetrievalQA.from_chain_type(
         llm=llm,
         chain_type="stuff",
@@ -45,12 +57,18 @@ def get_response_llm(llm,vectorstore_faiss,query):
         
         
     )
-    answer=qa({"query":query})
+    answer = qa.invoke({"query": query})
     return answer["result"]
     
 if __name__=='__main__':
-    vectorstore_faiss=get_vector_store()
-    query="what is RAG token?"
+    print("\n<------------------------------------------>")
+    print("<----------------- main ------------------->")
+    print("<------------------------------------------>\n")
+    #docs=data_ingestion()
+    #vectorstore_faiss=get_vector_store(docs)
+    faiss_index=FAISS.load_local("faiss_index",bedrock_embeddings,allow_dangerous_deserialization=True)
+    query="What is RAG token?"
     llm=get_llama2_llm()
-    get_response_llm(llm,vectorstore_faiss,query)
+
+    print(get_response_llm(llm,faiss_index,query))
     

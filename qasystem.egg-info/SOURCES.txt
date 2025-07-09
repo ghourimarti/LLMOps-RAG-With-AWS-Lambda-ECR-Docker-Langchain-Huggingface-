@@ -3,6 +3,9 @@ setup.py
 QASystem/__init__.py
 QASystem/ingestion.py
 QASystem/retrievalandgeneration.py
+QASystem_old/__init__.py
+QASystem_old/ingestion.py
+QASystem_old/retrievalandgeneration.py
 qasystem.egg-info/PKG-INFO
 qasystem.egg-info/SOURCES.txt
 qasystem.egg-info/dependency_links.txt
