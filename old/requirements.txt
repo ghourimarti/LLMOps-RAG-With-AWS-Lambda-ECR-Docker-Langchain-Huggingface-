@@ -1,0 +1,14 @@
+langchain
+langchainhub
+bs4
+tiktoken
+openai
+boto3
+langchain_community
+chromadb
+awscli
+streamlit
+pypdf
+faiss-cpu
+langchain-aws
+-e .
